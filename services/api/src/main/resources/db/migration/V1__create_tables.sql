@@ -1,0 +1,92 @@
+-- V1: Create all tables
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    phone VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(100),
+    role VARCHAR(20) NOT NULL DEFAULT 'COMMUTER',
+    momo_token VARCHAR(255),
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS routes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    origin_name VARCHAR(100) NOT NULL,
+    origin_lat DECIMAL(10,8) NOT NULL,
+    origin_lng DECIMAL(11,8) NOT NULL,
+    dest_name VARCHAR(100) NOT NULL,
+    dest_lat DECIMAL(10,8) NOT NULL,
+    dest_lng DECIMAL(11,8) NOT NULL,
+    fare DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'ZAR',
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS stops (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    route_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    latitude DECIMAL(10,8) NOT NULL,
+    longitude DECIMAL(11,8) NOT NULL,
+    sequence INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (route_id) REFERENCES routes(id)
+);
+
+CREATE TABLE IF NOT EXISTS trips (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    route_id BIGINT NOT NULL,
+    boarding_stop_id BIGINT,
+    alighting_stop_id BIGINT,
+    status VARCHAR(20) NOT NULL DEFAULT 'BOOKED',
+    fare_paid DECIMAL(10,2) NOT NULL,
+    momo_reference VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (route_id) REFERENCES routes(id)
+);
+
+CREATE TABLE IF NOT EXISTS travel_passes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    pass_type VARCHAR(20) NOT NULL,
+    valid_from DATE NOT NULL,
+    valid_until DATE NOT NULL,
+    price_paid DECIMAL(10,2) NOT NULL,
+    momo_reference VARCHAR(100),
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS payments (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'ZAR',
+    momo_reference VARCHAR(100),
+    momo_status VARCHAR(30),
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    description VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS operators (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+    company_name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50),
+    momo_phone VARCHAR(20) NOT NULL,
+    verified BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

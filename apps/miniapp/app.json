@@ -2,36 +2,32 @@
   "expo": {
     "name": "RoutePay",
     "slug": "routepay",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "scheme": "routepay",
+    "userInterfaceStyle": "light",
     "splash": {
-      "backgroundColor": "#FFCC00",
-      "resizeMode": "contain"
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFCC00"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.routepay.app"
+      "bundleIdentifier": "com.routepay.miniapp"
     },
     "android": {
+      "package": "com.routepay.miniapp",
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFCC00"
-      },
-      "package": "com.routepay.app"
+      }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-router"],
-    "extra": {
-      "apiUrl": "http://localhost:8000",
-      "eas": {
-        "projectId": "your-project-id"
-      }
-    }
+    "plugins": ["expo-secure-store"]
   }
 }

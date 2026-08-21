@@ -1,0 +1,11 @@
+{
+  "name": "routepay",
+  "private": true,
+  "scripts": {
+    "dev:dashboard": "pnpm --filter @routepay/operator-dashboard dev",
+    "dev:miniapp": "pnpm --filter @routepay/miniapp start",
+    "dev:landing": "pnpm --filter @routepay/landing dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

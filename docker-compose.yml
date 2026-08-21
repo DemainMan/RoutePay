@@ -1,0 +1,94 @@
+# ============================================================================
+# RoutePay — full local development stack
+#
+#   docker compose up --build
+#
+#   API ............... http://localhost:8080  (Swagger: /swagger-ui.html)
+#   Operator dashboard . http://localhost:3001
+#   Landing page ....... http://localhost:3002
+#   PostgreSQL ......... localhost:5432 (routepay/routepay)
+#
+# MoMo stays MOCKED in this stack (MOMO_ENVIRONMENT=MOCK) — safe to demo.
+# ============================================================================
+
+name: routepay
+
+services:
+  # ---- PostgreSQL 16 -------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: routepay
+      POSTGRES_USER: routepay
+      POSTGRES_PASSWORD: routepay
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U routepay -d routepay"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - routepay-net
+
+  # ---- Spring Boot API ------------------------------------------------------
+  # Built from the repo root because the Maven build is multi-module
+  # (packages/momo-sdk + services/api).
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: routepay
+      DB_USER: routepay
+      DB_PASSWORD: routepay
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-please-routepay-2026-hackathon}
+      # Env var overrides the production profile so payments stay mocked.
+      MOMO_ENVIRONMENT: ${MOMO_ENVIRONMENT:-MOCK}
+      MOMO_SUBSCRIPTION_KEY: ${MOMO_SUBSCRIPTION_KEY:-mock-subscription-key}
+      MOMO_CALLBACK_URL: ${MOMO_CALLBACK_URL:-https://example.com/callback}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - routepay-net
+
+  # ---- Operator Dashboard (Next.js) -----------------------------------------
+  dashboard:
+    build:
+      context: ./apps/operator-dashboard
+    ports:
+      - "3001:3001"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - api
+    networks:
+      - routepay-net
+
+  # ---- Landing Page (Next.js) -------------------------------------------------
+  landing:
+    build:
+      context: ./apps/landing
+    ports:
+      - "3002:3002"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - api
+    networks:
+      - routepay-net
+
+networks:
+  routepay-net:
+    driver: bridge
+
+volumes:
+  pgdata:
