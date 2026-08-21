@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import za.co.routepay.momo.collections.dto.PaymentRequest;
 import za.co.routepay.momo.collections.dto.PaymentResponse;
+import za.co.routepay.momo.config.MoMoEnvironment;
 import za.co.routepay.momo.config.MoMoProperties;
 import za.co.routepay.momo.exception.MoMoApiException;
 import za.co.routepay.momo.exception.MoMoConnectionException;
+import za.co.routepay.momo.mock.MockMoMoBackend;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,11 +29,14 @@ public class CollectionsClient {
     private final MoMoProperties properties;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final MockMoMoBackend mockBackend;
 
-    public CollectionsClient(MoMoProperties properties, HttpClient httpClient, ObjectMapper objectMapper) {
+    public CollectionsClient(MoMoProperties properties, HttpClient httpClient,
+                             ObjectMapper objectMapper, MockMoMoBackend mockBackend) {
         this.properties = properties;
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
+        this.mockBackend = mockBackend;
     }
 
     /**
@@ -43,6 +48,11 @@ public class CollectionsClient {
     public PaymentResponse requestToPay(PaymentRequest request) {
         log.info("🚀 Collections: requestToPay — {} {} to {} (ref: {})",
                 request.getAmount(), request.getCurrency(), request.getPhone(), request.getReference());
+
+        if (properties.getEnvironment() == MoMoEnvironment.MOCK) {
+            log.info("Collections: MOCK mode — delegating to mock backend");
+            return mockBackend.collectPayment(request);
+        }
 
         String referenceId = UUID.randomUUID().toString();
 

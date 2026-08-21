@@ -22,8 +22,8 @@ public class AuthController {
     @PostMapping("/otp/request")
     @Operation(summary = "Request an OTP for a phone number")
     public ResponseEntity<Map<String, String>> requestOtp(@Valid @RequestBody OtpRequest request) {
-        authService.requestOtp(request.getPhone());
-        return ResponseEntity.ok(Map.of("message", "OTP sent", "phone", request.getPhone()));
+        String otp = authService.requestOtp(request.getPhone());
+        return ResponseEntity.ok(Map.of("message", "OTP sent", "phone", request.getPhone(), "otp", otp));
     }
 
     @PostMapping("/otp/verify")

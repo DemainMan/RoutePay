@@ -132,25 +132,30 @@ cat <<EOF
          curl -X POST ${API_URL}/api/auth/otp/request \\
               -H 'Content-Type: application/json' \\
               -d '{"phone": "+27821234567"}'
-    3. Verify OTP (mock code is ALWAYS 123456) to get a JWT:
-         curl -X POST ${API_URL}/api/auth/otp/verify \\
+    3. Request an OTP (response contains the OTP — no hardcoded code):
+         OTP=\$(curl -s -X POST ${API_URL}/api/auth/otp/request \\
               -H 'Content-Type: application/json' \\
-              -d '{"phone": "+27821234567", "otp": "123456"}'
-    4. Browse the 7 seeded Joburg routes:
-         curl ${API_URL}/api/routes
-    5. Book a trip (MoMo Collections API — mocked):
+              -d '{"phone": "+27821234567"}' | grep -o '"otp":"[^"]*"' | cut -d'"' -f4)
+    4. Verify OTP with the code above to get a JWT:
+         TOKEN=\$(curl -s -X POST ${API_URL}/api/auth/otp/verify \\
+              -H 'Content-Type: application/json' \\
+              -d "{\"phone\": \"+27821234567\", \"otp\": \"\$OTP\"}" \\
+              | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
+    5. Browse the 7 seeded Joburg routes:
+         curl ${API_URL}/api/routes -H "Authorization: Bearer \$TOKEN"
+    6. Book a trip (MoMo Collections API — mocked):
          curl -X POST ${API_URL}/api/trips \\
               -H 'Content-Type: application/json' \\
-              -H 'Authorization: Bearer <TOKEN>' \\
+              -H "Authorization: Bearer \$TOKEN" \\
               -d '{"routeId": 1}'
-    6. Buy a travel pass (MoMo Payments API — mocked):
+    7. Buy a travel pass (MoMo Payments API — mocked):
          curl -X POST ${API_URL}/api/passes \\
               -H 'Content-Type: application/json' \\
-              -H 'Authorization: Bearer <TOKEN>' \\
+              -H "Authorization: Bearer \$TOKEN" \\
               -d '{"passType": "DAILY"}'
-    7. Operator dashboard (separate terminal):
+    8. Operator dashboard (separate terminal):
          cd apps/operator-dashboard && npm run dev   ->  http://localhost:3001
-    8. Real-time trip updates over WebSocket (STOMP/SockJS):
+    9. Real-time trip updates over WebSocket (STOMP/SockJS):
          ws://localhost:${API_PORT}/ws   ->  subscribe to /topic/trips
 
   All MTN MoMo calls are MOCKED by default (momo.environment=MOCK) —

@@ -62,40 +62,46 @@ Point out the four tag groups: **Authentication**, **Routes**, **Trips**,
 No passwords: commuters log in with their phone number and an MTN MoMo OTP.
 
 ```bash
-curl -X POST http://localhost:8080/api/auth/otp/request \
+OTP=$(curl -s -X POST http://localhost:8080/api/auth/otp/request \
   -H 'Content-Type: application/json' \
-  -d '{"phone": "+27821234567"}'
+  -d '{"phone": "+27821234567"}' \
+  | grep -o '"otp":"[^"]*"' | cut -d'"' -f4)
+
+echo "$OTP"
 ```
 
 Response:
 
 ```json
-{ "message": "OTP sent", "phone": "+27821234567" }
+{ "message": "OTP sent", "phone": "+27821234567", "otp": "482916" }
 ```
 
 ### Step 2 — Verify OTP and get a JWT
 
-In mock mode the OTP is **always `123456`**.
+Use the OTP returned in Step 1:
 
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/otp/verify \
   -H 'Content-Type: application/json' \
-  -d '{"phone": "+27821234567", "otp": "123456"}' \
-  | jq -r .token)
+  -d "{\"phone\": \"+27821234567\", \"otp\": \"$OTP\"}" \
+  | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
 
 echo "$TOKEN"
 ```
 
 (No jq? Use `| grep -o '"token":"[^"]*"' | cut -d'"' -f4` instead.)
 
-Response contains a JWT plus the user profile:
+Response contains a JWT plus the nested user profile:
 
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiJ9...",
-  "phone": "+27821234567",
-  "name": "Commuter 4567",
-  "role": "COMMUTER"
+  "user": {
+    "id": 1,
+    "phoneNumber": "+27821234567",
+    "name": "Commuter 4567",
+    "role": "COMMUTER"
+  }
 }
 ```
 

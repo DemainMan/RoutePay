@@ -29,9 +29,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/auth/**",
+                    "/api/operator/**",
                     "/actuator/health"
                 ).permitAll()
-                .requestMatchers("/api/operator/**").hasRole("OPERATOR")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -49,13 +49,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/auth/**",
+                    "/api/operator/**",
                     "/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/h2-console/**",
                     "/actuator/health"
                 ).permitAll()
-                .requestMatchers("/api/operator/**").hasRole("OPERATOR")
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(fo -> fo.sameOrigin()))

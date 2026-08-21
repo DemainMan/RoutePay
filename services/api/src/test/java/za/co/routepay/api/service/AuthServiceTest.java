@@ -46,9 +46,11 @@ class AuthServiceTest {
     void request_otp_delegates_to_otp_service() {
         AuthClient authClient = mock(AuthClient.class);
         when(moMoClient.getAuth()).thenReturn(authClient);
+        when(otpService.issue(PHONE)).thenReturn("654321");
 
-        authService.requestOtp(PHONE);
+        String returnedOtp = authService.requestOtp(PHONE);
 
+        assertThat(returnedOtp).isEqualTo("654321");
         verify(otpService).issue(PHONE);
         verify(authClient).requestOtp(PHONE);
     }

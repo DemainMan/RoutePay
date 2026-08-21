@@ -21,12 +21,13 @@ public class AuthService {
     private final MoMoClient moMoClient;
     private final OtpService otpService;
 
-    public void requestOtp(String phone) {
+    public String requestOtp(String phone) {
         log.info("Requesting OTP for phone={}", phone);
         // Generate and store OTP via our service (not MoMo mock)
-        otpService.issue(phone);
+        String otp = otpService.issue(phone);
         // Also call MoMo SDK (no-op in mock mode, needed for real integration)
         moMoClient.getAuth().requestOtp(phone);
+        return otp;
     }
 
     public AuthResponse verifyOtp(OtpVerifyRequest request) {

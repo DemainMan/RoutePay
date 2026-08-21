@@ -71,12 +71,13 @@ public class MoMoClient {
                 .connectTimeout(Duration.ofSeconds(10))
                 .build();
 
-        this.collections = new CollectionsClient(properties, httpClient, objectMapper);
-        this.disbursements = new DisbursementsClient(properties, httpClient, objectMapper);
-        this.remittances = new RemittancesClient(properties, httpClient, objectMapper);
-        this.payments = new PaymentsClient(properties, httpClient, objectMapper);
-        this.auth = new AuthClient(properties, httpClient, objectMapper);
         this.mockBackend = new MockMoMoBackend();
+
+        this.collections = new CollectionsClient(properties, httpClient, objectMapper, this.mockBackend);
+        this.disbursements = new DisbursementsClient(properties, httpClient, objectMapper, this.mockBackend);
+        this.remittances = new RemittancesClient(properties, httpClient, objectMapper, this.mockBackend);
+        this.payments = new PaymentsClient(properties, httpClient, objectMapper, this.mockBackend);
+        this.auth = new AuthClient(properties, httpClient, objectMapper);
 
         log.info("MoMoClient initialized — env={}, baseUrl={}",
                 properties.getEnvironment(), properties.getBaseUrl());

@@ -2,9 +2,11 @@ package za.co.routepay.momo.remittances;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import za.co.routepay.momo.config.MoMoEnvironment;
 import za.co.routepay.momo.config.MoMoProperties;
 import za.co.routepay.momo.exception.MoMoApiException;
 import za.co.routepay.momo.exception.MoMoConnectionException;
+import za.co.routepay.momo.mock.MockMoMoBackend;
 import za.co.routepay.momo.remittances.dto.RemittanceRequest;
 import za.co.routepay.momo.remittances.dto.RemittanceResponse;
 
@@ -26,11 +28,14 @@ public class RemittancesClient {
     private final MoMoProperties properties;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final MockMoMoBackend mockBackend;
 
-    public RemittancesClient(MoMoProperties properties, HttpClient httpClient, ObjectMapper objectMapper) {
+    public RemittancesClient(MoMoProperties properties, HttpClient httpClient,
+                             ObjectMapper objectMapper, MockMoMoBackend mockBackend) {
         this.properties = properties;
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
+        this.mockBackend = mockBackend;
     }
 
     /**
@@ -43,6 +48,11 @@ public class RemittancesClient {
         log.info("🌍 Remittances: send — {} {} → {} from {} to {}",
                 request.getAmount(), request.getSourceCurrency(),
                 request.getTargetCurrency(), request.getSenderPhone(), request.getRecipientPhone());
+
+        if (properties.getEnvironment() == MoMoEnvironment.MOCK) {
+            log.info("Remittances: MOCK mode — delegating to mock backend");
+            return mockBackend.remit(request);
+        }
 
         String referenceId = UUID.randomUUID().toString();
 

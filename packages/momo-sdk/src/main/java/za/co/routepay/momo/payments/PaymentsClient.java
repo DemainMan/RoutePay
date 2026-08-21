@@ -2,9 +2,11 @@ package za.co.routepay.momo.payments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import za.co.routepay.momo.config.MoMoEnvironment;
 import za.co.routepay.momo.config.MoMoProperties;
 import za.co.routepay.momo.exception.MoMoApiException;
 import za.co.routepay.momo.exception.MoMoConnectionException;
+import za.co.routepay.momo.mock.MockMoMoBackend;
 import za.co.routepay.momo.payments.dto.PaymentRequest;
 import za.co.routepay.momo.payments.dto.PaymentResponse;
 
@@ -25,17 +27,25 @@ public class PaymentsClient {
     private final MoMoProperties properties;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final MockMoMoBackend mockBackend;
 
-    public PaymentsClient(MoMoProperties properties, HttpClient httpClient, ObjectMapper objectMapper) {
+    public PaymentsClient(MoMoProperties properties, HttpClient httpClient,
+                          ObjectMapper objectMapper, MockMoMoBackend mockBackend) {
         this.properties = properties;
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
+        this.mockBackend = mockBackend;
     }
 
     public PaymentResponse requestPayment(PaymentRequest request) {
         log.info("Payments: requestPayment {} {} for {} ref={} product={}",
                 request.getAmount(), request.getCurrency(), request.getPhone(),
                 request.getReference(), request.getProductType());
+
+        if (properties.getEnvironment() == MoMoEnvironment.MOCK) {
+            log.info("Payments: MOCK mode — delegating to mock backend");
+            return mockBackend.payForProduct(request);
+        }
 
         String referenceId = UUID.randomUUID().toString();
 

@@ -51,7 +51,7 @@ public class OperatorService {
     }
 
     public OperatorTripListResponse getTrips() {
-        List<Trip> trips = tripRepository.findAll();
+        List<Trip> trips = tripRepository.findAllWithRouteAndUser();
         List<OperatorTripResponse> tripResponses = new ArrayList<>();
         for (Trip trip : trips) {
             tripResponses.add(OperatorTripResponse.builder()
