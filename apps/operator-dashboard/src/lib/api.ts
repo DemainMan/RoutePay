@@ -220,8 +220,18 @@ export async function getTrips(): Promise<Trip[]> {
 }
 
 export async function getEarnings(days = 7): Promise<DailyEarnings[]> {
-  const payload = await getJson<{ days: DailyEarnings[] }>(
-    `/api/operator/earnings?days=${days}`
-  );
-  return payload?.days?.length ? payload.days : MOCK_EARNINGS;
+  const payload = await getJson<{
+    days: { date: string; trips: number; passes: number; total: number }[];
+  }>(`/api/operator/earnings?days=${days}`);
+
+  if (!payload?.days?.length) return MOCK_EARNINGS;
+
+  return payload.days.map((d) => ({
+    date: d.date,
+    label: new Date(d.date).toLocaleDateString("en-US", { weekday: "short" }),
+    trips: d.trips ?? 0,
+    momo: d.total ?? 0,
+    cash: 0,
+    revenue: d.total ?? 0,
+  }));
 }

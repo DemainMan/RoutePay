@@ -1,5 +1,6 @@
-export function formatGHS(amount: number): string {
-  return `₵${amount.toLocaleString("en-US", {
+export function formatGHS(amount: number | undefined | null): string {
+  const safe = amount ?? 0;
+  return `₵${safe.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
