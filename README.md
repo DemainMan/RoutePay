@@ -90,7 +90,7 @@ RoutePay/
 │   └── api/                  # Java 17 + Spring Boot 3.2
 ├── packages/
 │   ├── momo-sdk/             # Reusable Java MoMo API client
-│   └── shared-types/         # TypeScript type definitions
+│   └── ...                   # (reserved for future shared packages)
 ├── scripts/
 │   ├── demo.sh               # One-command demo launcher
 │   └── demo.md               # Step-by-step demo guide
@@ -135,7 +135,7 @@ momo:
 | Dashboard | Next.js 14, TypeScript |
 | Landing | Next.js 14, TypeScript |
 | API Docs | springdoc-openapi (Swagger UI) |
-| Testing | JUnit 5 + Mockito + AssertJ (48 tests) |
+| Testing | JUnit 5 + Mockito + AssertJ (71 tests) |
 
 ## API Endpoints
 
@@ -227,6 +227,14 @@ Reusable Java library wrapping all MoMo API groups:
 - **Trips**: Monitor all trips with status filtering
 - **Earnings**: Daily/weekly/monthly revenue breakdown
 
+### Operator Dashboard
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/operator/stats` | Fleet stats (public for demo) |
+| GET | `/api/operator/trips` | All trips (requires auth) |
+| GET | `/api/operator/earnings` | Earnings breakdown (requires auth) |
+
 ## Environment Variables
 
 Copy `.env.example` to `.env` and fill in your values:
@@ -250,12 +258,12 @@ Key variables:
 ## Testing
 
 ```bash
-# Run all tests (48 tests)
+# Run all tests (71 tests)
 mvn test
 
 # Run specific module tests
 mvn test -pl packages/momo-sdk    # 47 SDK tests
-mvn test -pl services/api         # 1 context load test
+mvn test -pl services/api         # 24 API tests
 
 # Build without tests
 mvn clean install -DskipTests
@@ -264,6 +272,10 @@ mvn clean install -DskipTests
 ## Design Decisions
 
 See [docs/DECISIONS.md](docs/DECISIONS.md) for architecture rationale.
+See [docs/API.md](docs/API.md) for MoMo API integration details.
+See [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for the 3-minute judge walkthrough.
+See [docs/PITCH.md](docs/PITCH.md) for the pitch narrative.
+See [docs/JUDGE_QA.md](docs/JUDGE_QA.md) for anticipated judge questions.
 
 Key decisions:
 - **Mock-first**: SDK defaults to mock mode for reliable hackathon demos
