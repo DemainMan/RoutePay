@@ -77,3 +77,21 @@ Java 17 + Spring Boot — enterprise-grade, strong typing, massive ecosystem.
 React Native (Expo) — cross-platform mobile from one codebase.
 Next.js — server-rendered dashboard, fast, TypeScript.
 All chosen for production viability, not just hackathon convenience.
+
+## 13. Are the MoMo payments real or mocked, and does that matter?
+
+They're mocked for the demo (`momo.environment=MOCK`) so we never move real
+money. The SDK is a thin wrapper around the real MoMo Open API — switching to
+live is a single config value plus your real subscription key. All 5 API
+groups (Collections, Disbursements, Remittances, Payments, Auth) return
+realistic responses with UUIDs and timestamps. The mock-first design is what
+makes a reliable, repeatable live demo possible.
+
+## 14. How does the operator dashboard get its earnings data?
+
+Every trip and pass purchase is persisted, and the operator endpoints
+(`/api/operator/earnings`) aggregate those records by day. The dashboard
+fetches this in real time — when a judge books a trip in Swagger, the revenue
+figure updates on the dashboard over WebSocket. What you see is live data,
+not static mock charts.
+
