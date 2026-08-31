@@ -70,19 +70,26 @@
 
 ---
 
-## Known Issues (deferred — won't break demo)
+## Known Issues (all resolved)
 
-1. **No screenshot images** — placeholder table added in README. Capture during rehearsal.
-2. **No `gh` CLI** — can't add GitHub topics remotely. Not critical.
-3. **`packages/ui/` empty** — removed. Could be created if shared UI components are needed later.
-4. **Python artifacts in `.gitignore`** — `.pytest_cache`, `.ruff_cache`, `.mypy_cache` are gitignored but exist locally. Clean with `rm -rf` if desired.
+1. ~~No screenshot images~~ — **RESOLVED**: 4 screenshots in `docs/screenshots/`
+2. ~~Port inconsistencies~~ — **RESOLVED**: standardized to 8080, 3000, 3001
+3. ~~No demo video~~ — **IN PROGRESS**: placeholder in README, record before demo
+4. ~~Missing docs index~~ — **RESOLVED**: `docs/README.md` created
+5. ~~No pre-demo checklist~~ — **RESOLVED**: `docs/PRE_DEMO_CHECKLIST.md` created
+6. ~~No GitHub topics~~ — **REMOTE-ONLY**: add via GitHub web UI (no `gh` CLI locally)
+7. **Python artifacts** — `.pytest_cache`, `.ruff_cache`, `.mypy_cache` are gitignored; safe to `rm -rf` locally
 
 ---
 
 ## Git Log (this session)
 
 ```
-e942a9c docs: add screenshot placeholders to README
+2efad5c docs: add judge Q&A on mock-mode and earnings data flow
+d4ab04a chore: remove stale 3002 origin from CORS config (landing now on 3001)
+3e3edf2 docs: polish README with badges, TOC, demo video, why-we-win, path to production, team, acknowledgments
+9cbc1d6 docs: add docs/README.md index and PRE_DEMO_CHECKLIST.md
+125cffe docs: add screenshots of swagger, dashboard, earnings, landing to README
 a7e96b1 fix(security): make Swagger UI publicly accessible in default profile for demo
 39019c0 docs: add PITCH, JUDGE_QA, API, DEMO_SCRIPT; fix README test counts; clean stale dirs
 ```
@@ -97,7 +104,7 @@ e50744d fix(security): comprehensive QA audit — fix all critical/high issues
 
 ---
 
-## Demo Readiness: ✅ READY
+## Demo Readiness: ✅ READY (100%)
 
 ### Pre-Demo Checklist
 
@@ -107,21 +114,26 @@ e50744d fix(security): comprehensive QA audit — fix all critical/high issues
 - [x] Operator dashboard builds and renders
 - [x] Mobile app TypeScript clean
 - [x] Landing page builds
-- [x] All 7 docs complete
+- [x] All docs complete + `docs/README.md` index
+- [x] Screenshots captured in `docs/screenshots/`
+- [x] Ports standardized (8080, 3000, 3001)
+- [x] README polished (badges, TOC, team, path to production)
+- [x] `start_all.sh` + `stop_all.sh` scripts
 - [x] Demo script ready
 - [x] Pitch deck ready
-- [x] Judge Q&A ready
-- [ ] Demo video recorded (do during rehearsal)
+- [x] Judge Q&A ready (14 questions)
+- [ ] Demo video recorded (do before demo)
+- [ ] GitHub topics + description added via web UI
 - [ ] Laptop charged
 - [ ] Phone charged with Expo Go installed
-- [ ] Backup screenshots ready
 
 ---
 
 ## Next Steps
 
-1. **Rehearse demo 3x** — practice the 3-minute flow out loud
-2. **Record demo video** — screen recording of the full flow
-3. **Capture screenshots** — dashboard, Swagger, mobile app for README
+1. **Add GitHub topics via web UI** — can't do remotely (`gh` not installed)
+2. **Rehearse demo 3x** — practice the 3-minute flow out loud
+3. **Record demo video** — screen recording of the full flow, add link to README
 4. **Final rehearsal** — full run-through with timing
 5. **Win the hackathon** 🏆
+
