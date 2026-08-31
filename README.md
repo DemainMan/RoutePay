@@ -2,11 +2,37 @@
 
 **Every ride. One tap.**
 
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green)
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![React Native](https://img.shields.io/badge/React%20Native-Expo-blue)
+![Tests](https://img.shields.io/badge/tests-71%20passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Hackathon](https://img.shields.io/badge/MoMo%20Hackathon-2026-yellow)
+
 A MoMo Mini App that lets South African taxi commuters pay fares via MoMo in
 under 5 seconds, plan multi-modal routes, and buy travel passes — while
 operators get instant payouts and a real-time earnings dashboard.
 
 Built for the **MoMo Mini App Hackathon 2026** (Track 3: Travel and Mobility).
+
+## Table of Contents
+
+- [Demo](#demo)
+- [Screenshots](#screenshots)
+- [🎥 Demo Video](#-demo-video)
+- [Why RoutePay Wins](#-why-routepay-wins)
+- [Path to Production](#-path-to-production)
+- [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [MoMo API Integration](#momo-api-integration)
+- [Tech Stack](#tech-stack)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Team](#-team)
+- [Acknowledgments](#-acknowledgments)
+- [License](#license)
 
 ---
 
@@ -19,6 +45,58 @@ Built for the **MoMo Mini App Hackathon 2026** (Track 3: Travel and Mobility).
 | ![Earnings Page](docs/screenshots/earnings-page.png) | 7-day revenue breakdown and trip settlement |
 | ![Landing Page](docs/screenshots/landing-page.png) | Marketing page with problem/solution/CTA |
 | Mobile App *(from Expo Go)* | OTP login, route browsing, QR scan payment *(add before demo)* |
+
+---
+
+## 🎥 Demo Video
+
+*Demo video will be recorded before the hackathon. Shows the full flow: OTP login → route browse → trip booking → travel pass → operator dashboard update.*
+
+> Pre-recorded backup demo keeps the pitch on track even if the live demo fails.
+
+---
+
+## 🏆 Why RoutePay Wins
+
+1. **Real Problem** — 15M+ daily taxi commuters, 90% pay cash, no digital history
+2. **All 5 MoMo APIs** — Collections, Disbursements, Remittances, Payments, Auth
+3. **Two-Sided Value** — Commuters get speed/safety, operators get creditworthiness
+4. **Path to Production** — Mock → live is one config change
+5. **Production-Grade** — 71 tests, security audited, Docker-ready, CI-enabled
+6. **Super App Aligned** — Becomes the mobility layer of the future MoMo Super App
+
+---
+
+## 🚀 Path to Production
+
+RoutePay is designed to go from hackathon demo to production in 3 steps:
+
+### Step 1: Get MoMo Credentials
+- Sign up at <https://momodeveloper.mtn.com/>
+- Get subscription key, API user, API key
+- Update `.env`:
+  ```bash
+  MOMO_ENVIRONMENT=SANDBOX    # or PRODUCTION
+  MOMO_SUBSCRIPTION_KEY=<your-key>
+  ```
+
+### Step 2: Switch Database to PostgreSQL
+- Provision PostgreSQL (Supabase, AWS RDS, etc.)
+- Update `.env`:
+  ```bash
+  DB_HOST=<your-host>
+  DB_NAME=routepay
+  DB_USER=<your-user>
+  DB_PASSWORD=<your-password>
+  ```
+- Run migrations: `mvn flyway:migrate`
+
+### Step 3: Deploy
+- Backend: Railway, Heroku, AWS, or DigitalOcean
+- Frontend: Vercel or Netlify
+- Mobile: Expo EAS Build → App Store / Play Store
+
+**That's it.** Same code, same tests, same security. Just swap the env vars.
 
 ---
 
@@ -295,6 +373,39 @@ Key decisions:
 - **JWT auth**: Stateless tokens, standard for mobile apps
 - **WebSocket + STOMP**: Real-time trip updates without external dependencies
 - **Multi-module Maven**: SDK is reusable, API is independently deployable
+
+## Documentation
+
+Comprehensive documentation lives in the [docs/](docs/) folder:
+
+| Document | Purpose |
+|----------|---------|
+| [docs/README.md](docs/README.md) | Master documentation index |
+| [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | 3-minute judge walkthrough |
+| [docs/PITCH.md](docs/PITCH.md) | Pitch narrative |
+| [docs/JUDGE_QA.md](docs/JUDGE_QA.md) | Anticipated judge questions |
+| [docs/API.md](docs/API.md) | MoMo API integration guide |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | Architecture decisions |
+| [docs/QA_AUDIT.md](docs/QA_AUDIT.md) | Security audit results |
+| [docs/PRE_DEMO_CHECKLIST.md](docs/PRE_DEMO_CHECKLIST.md) | Pre-demo preparation |
+| [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) | Final status report |
+
+## 👤 Team
+
+Built by **Aphile Ngubeni** ([@DemainMan](https://github.com/DemainMan)) for the MoMo Mini App Hackathon 2026.
+
+- **Role:** Solo developer
+- **Location:** Johannesburg, South Africa
+- **Track:** Travel and Mobility
+- **Stack:** Java 17, Spring Boot 3.2, Next.js 14, Expo, PostgreSQL
+
+## 🙏 Acknowledgments
+
+- **MTN MoMo** — For the opportunity and the MoMo APIs
+- **Spring Boot** — For the robust backend framework
+- **Next.js** — For the beautiful dashboard
+- **Expo** — For the mobile app platform
+- **The open-source community** — For countless libraries that made this possible
 
 ## License
 
