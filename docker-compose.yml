@@ -4,8 +4,8 @@
 #   docker compose up --build
 #
 #   API ............... http://localhost:8080  (Swagger: /swagger-ui.html)
-#   Operator dashboard . http://localhost:3001
-#   Landing page ....... http://localhost:3002
+#   Operator dashboard . http://localhost:3000
+#   Landing page ....... http://localhost:3001
 #   PostgreSQL ......... localhost:5432 (routepay/routepay)
 #
 # MoMo stays MOCKED in this stack (MOMO_ENVIRONMENT=MOCK) — safe to demo.
@@ -65,7 +65,7 @@ services:
     build:
       context: ./apps/operator-dashboard
     ports:
-      - "3001:3001"
+      - "3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8080
     depends_on:
@@ -78,7 +78,7 @@ services:
     build:
       context: ./apps/landing
     ports:
-      - "3002:3002"
+      - "3001:3001"
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8080
     depends_on:

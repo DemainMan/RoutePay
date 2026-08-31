@@ -56,7 +56,7 @@ open http://localhost:8080/swagger-ui.html
 ```bash
 cd apps/operator-dashboard
 npm install
-npm run dev          # http://localhost:3001
+npm run dev          # http://localhost:3000
 ```
 
 ### Mini App (React Native)
@@ -72,7 +72,7 @@ npx expo start       # scan QR with Expo Go
 ```bash
 cd apps/landing
 npm install
-npm run dev          # http://localhost:3002
+npm run dev          # http://localhost:3001
 ```
 
 ### Docker Compose (full stack)
@@ -85,8 +85,8 @@ docker compose up --build
 | -------- | ---------------------------- |
 | API      | http://localhost:8080         |
 | Swagger  | http://localhost:8080/swagger-ui.html |
-| Dashboard| http://localhost:3001         |
-| Landing  | http://localhost:3002         |
+| Dashboard| http://localhost:3000         |
+| Landing  | http://localhost:3001         |
 | PostgreSQL| localhost:5432               |
 
 ---

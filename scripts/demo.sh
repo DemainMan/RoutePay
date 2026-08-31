@@ -154,7 +154,7 @@ cat <<EOF
               -H "Authorization: Bearer \$TOKEN" \\
               -d '{"passType": "DAILY"}'
     8. Operator dashboard (separate terminal):
-         cd apps/operator-dashboard && npm run dev   ->  http://localhost:3001
+         cd apps/operator-dashboard && npm run dev   ->  http://localhost:3000
     9. Real-time trip updates over WebSocket (STOMP/SockJS):
          ws://localhost:${API_PORT}/ws   ->  subscribe to /topic/trips
 

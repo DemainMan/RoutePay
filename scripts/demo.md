@@ -33,10 +33,10 @@ it kills the backend automatically.
 For the full stack (dashboard + landing page), open two extra terminals:
 
 ```bash
-# Terminal 2 — Operator dashboard on http://localhost:3001
+# Terminal 2 — Operator dashboard on http://localhost:3000
 cd apps/operator-dashboard && npm install && npm run dev
 
-# Terminal 3 — Landing page on http://localhost:3002
+# Terminal 3 — Landing page on http://localhost:3001
 cd apps/landing && npm install && npm run dev
 ```
 
@@ -182,7 +182,7 @@ curl http://localhost:8080/api/passes -H "Authorization: Bearer $TOKEN"
 
 ### Step 6 — Operator dashboard
 
-Open <http://localhost:3001>.
+Open <http://localhost:3000>.
 
 Highlight for judges:
 

@@ -8,17 +8,17 @@ bash scripts/demo.sh
 
 # Terminal 2: Operator Dashboard
 cd apps/operator-dashboard && npm install && npm run dev
-# → http://localhost:3001
+# → http://localhost:3000
 
 # Terminal 3: Landing Page
 cd apps/landing && npm install && npm run dev
-# → http://localhost:3002
+# → http://localhost:3001
 ```
 
 Open browser tabs:
 - http://localhost:8080/swagger-ui.html
+- http://localhost:3000
 - http://localhost:3001
-- http://localhost:3002
 
 ---
 
@@ -32,7 +32,7 @@ Open browser tabs:
 
 ### 2. Show the Operator Dashboard (30 sec)
 
-Open http://localhost:3001
+Open http://localhost:3000
 
 > "This is the operator dashboard. Real-time fleet view — today's trips,
 > total earnings, active routes. Every number here is a MoMo transaction.
@@ -79,7 +79,7 @@ Copy the JWT token, use in `POST /api/trips` → Execute
 
 ### 8. Switch to Dashboard (15 sec)
 
-Open http://localhost:3001 → refresh
+Open http://localhost:3000 → refresh
 
 > "There it is — live on the dashboard. The operator sees the trip,
 > the route, the fare, and the payment status. All real-time via WebSocket."
