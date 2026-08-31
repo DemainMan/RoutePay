@@ -12,14 +12,13 @@ Built for the **MoMo Mini App Hackathon 2026** (Track 3: Travel and Mobility).
 
 ## Screenshots
 
-> Screenshots to be captured during demo rehearsal.
-
 | Screenshot | Description |
 |------------|-------------|
-| Operator Dashboard | Live fleet stats, trip table, revenue charts |
-| Swagger UI | All five MoMo API endpoints documented |
-| Mobile App | OTP login, route browsing, trip booking |
-| E2E Flow | Full payment flow from scan to confirmation |
+| ![Operator Dashboard](docs/screenshots/operator-dashboard.png) | Live fleet stats, revenue charts, MoMo API status |
+| ![Swagger UI](docs/screenshots/swagger-ui.png) | All five MoMo API endpoints documented and testable |
+| ![Earnings Page](docs/screenshots/earnings-page.png) | 7-day revenue breakdown and trip settlement |
+| ![Landing Page](docs/screenshots/landing-page.png) | Marketing page with problem/solution/CTA |
+| Mobile App *(from Expo Go)* | OTP login, route browsing, QR scan payment *(add before demo)* |
 
 ---
 
